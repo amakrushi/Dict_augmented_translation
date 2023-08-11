@@ -11,6 +11,7 @@ import {
   useRecordContext,
   Filter,
   useNotify,
+  Button
 } from 'react-admin';
 import React from 'react';
 import Popup from './popup';
@@ -43,6 +44,7 @@ const DataTitle = () => {
 
 export const DataEdit = () => {
   const [modalContent, setModalContent] = React.useState(null);
+  const [formData, setFormData] = React.useState<any>(null);
   const notify = useNotify();
 
   const handleEditSubmit = (formData: any) => {
@@ -67,9 +69,22 @@ export const DataEdit = () => {
       .then((data) => {
         // Handle the API response for updation
         notify('Data updated successfully');
+        setFormData(data);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error('Error:', error);
+        notify('Error updating data');
+      });
+  };
 
-        // Make the second API call
-        return fetch('http://aitools.chatwithpdf.aitools.samagra.io/data_generation/dictionary_aug/remote/', {
+  const handleShowTranslation = () => {
+    if(!formData){
+      notify('Please update first to show translations!');
+      return;
+    }
+
+    fetch(`${process.env.NEXT_PUBLIC_BFF_URL}/translationdictionary/examples`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -78,20 +93,22 @@ export const DataEdit = () => {
             source: formData.source,
             translation: formData.translation,
           }),
-        });
+        })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to generate translations');
+        }
+        return response.json();
       })
-      .then((response) => response.json())
       .then((data) => {
-        // Handle the second API response
-        const content = JSON.parse(data.choices[0].message.content);
-        setModalContent(content);
+        setModalContent(data);
       })
       .catch((error) => {
         // Handle any errors
         console.error('Error:', error);
-        notify('Error updating data');
+        notify("Could not generate translations");
       });
-  };
+  }
 
   return (
     <Edit title={<DataTitle />}>
@@ -101,6 +118,7 @@ export const DataEdit = () => {
         <TextInput source="translation" />
         <BooleanInput source="use" />
         {modalContent && <Popup postResponseContent={modalContent} />}
+      <Button label="Show Translations" onClick={handleShowTranslation} />
       </SimpleForm>
     </Edit>
   );
@@ -108,6 +126,7 @@ export const DataEdit = () => {
 
 export const DataCreate = () => {
   const [modalContent, setModalContent] = React.useState(null);
+  const [formData, setFormData] = React.useState<any>(null);
   const notify = useNotify();
 
   const handleFormSubmit = (formData: any) => {
@@ -130,11 +149,20 @@ export const DataCreate = () => {
         return response.json();
       })
       .then((data) => {
-        // Handle the API response for creation
         notify('Data created successfully');
+        setFormData(data);
+      }).catch(error => {
+        console.error('Error:', error);
+        notify('Error creating data');
+      });
+    };
 
-        // Make the second API call
-        return fetch('http://aitools.chatwithpdf.aitools.samagra.io/data_generation/dictionary_aug/remote/', {
+  const handleShowTranslation = () => {
+    if(!formData){
+      notify('Please create first to show translations!');
+      return;
+    }
+    fetch(`${process.env.NEXT_PUBLIC_BFF_URL}/translationdictionary/examples`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -143,20 +171,22 @@ export const DataCreate = () => {
             source: formData.source,
             translation: formData.translation,
           }),
-        });
+        })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to generate translations');
+        }
+        return response.json();
       })
-      .then((response) => response.json())
       .then((data) => {
-        // Handle the second API response
-        const content = JSON.parse(data.choices[0].message.content);
-        setModalContent(content);
+        setModalContent(data);
       })
       .catch((error) => {
         // Handle any errors
         console.error('Error:', error);
-        notify('Error creating data');
+        notify("Could not generate translations");
       });
-  };
+  }
 
   return (
     <Create title="Create Data">
@@ -166,6 +196,7 @@ export const DataCreate = () => {
         <TextInput source="translation" />
         <BooleanInput source="use" />
         {modalContent && <Popup postResponseContent={modalContent} />}
+      <Button label="Show Translations" onClick={handleShowTranslation} />
       </SimpleForm>
     </Create>
   );

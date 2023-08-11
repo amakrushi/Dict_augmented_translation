@@ -13,7 +13,7 @@ function Popup(props: any) {
         <DialogContent>
         {props?.postResponseContent?.map((line: any, index: number) => (
             <DialogContentText key={index}>
-              {line[0]} - {line[1]}
+              {line[0]} - {line[2]}
             </DialogContentText>
           ))}
         </DialogContent>
