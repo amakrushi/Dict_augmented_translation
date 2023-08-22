@@ -9,15 +9,34 @@ const customDataProvider = {
   ...jsonProvider,
 
   getList: async (resource: any, params: any) => {
-    const response = await jsonProvider.getList(resource, params);
-    //@ts-ignore
-    const { data, totalCount } = response.data;
+    // Extract _start and _end parameters
+    const { page, perPage } = params.pagination;
+
+    // Create a new params object with page and perPage
+    const newParams = {
+      ...params,
+      pagination: { page, perPage }
+    };
+  
+    // Send the request with the new parameters
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BFF_URL}/${resource}?page=${page}&perPage=${perPage}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+  
+    const data = await response.json();
+  
     return {
-      data,
-      total: totalCount
+      data: data.data,
+      total: data.totalCount
     };
   },
-
+  
+  
+  
   getOne: async (resource: any, params: any) => {
     const response = await jsonProvider.getOne(resource, params);
     return {

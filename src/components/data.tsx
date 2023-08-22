@@ -11,7 +11,8 @@ import {
   useRecordContext,
   Filter,
   useNotify,
-  Button
+  Button,
+  Pagination
 } from 'react-admin';
 import React from 'react';
 import Popup from './popup';
@@ -27,7 +28,7 @@ const DataFilter = (props: any) => {
 };
 
 export const DataList = () => (
-  <List title="Dict Augmentation of Azure translation" filters={<DataFilter />}>
+  <List title="Dict Augmentation of Azure translation" filters={<DataFilter />} pagination={<Pagination />}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
       <TextField source="source" />
