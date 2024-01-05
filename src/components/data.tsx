@@ -12,10 +12,15 @@ import {
   Filter,
   useNotify,
   Button,
-  Pagination
+  Pagination,
+  TopToolbar,
+  CreateButton,
+  ExportButton
 } from 'react-admin';
 import React from 'react';
 import Popup from './popup';
+import { MdUpload } from 'react-icons/md';
+import ImportCsvModal from "./ImportCsvModal";
 
 const DataFilter = (props: any) => {
   return (
@@ -27,8 +32,50 @@ const DataFilter = (props: any) => {
   );
 };
 
+const ListActions = (props: any) => {
+  const {
+    className,
+    basePath,
+    total,
+    resource,
+    currentSort,
+    filterValues,
+    exporter,
+  } = props;
+  const [isImportModelShown, showImportModal] = React.useState(false)
+  
+  return (
+    <TopToolbar className={className}>
+      <CreateButton resource={resource}/>
+      <ExportButton
+        disabled={total === 0}
+        resource={resource}
+        sort={currentSort}
+        exporter={exporter}
+      />
+      <button 
+      onClick={()=>showImportModal(true)}
+      style={{
+        border: "none",
+        backgroundColor: "transparent",
+        padding: "5px 4px",
+        color: "#1976d2"
+      }}
+      >
+        <MdUpload style = {{height: 18, width: 18, paddingRight: "3px", marginBottom: "-4px"}}/>
+        <span style = {{
+          fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+          fontWeight: 500,
+          fontSize: "0.8125rem"}}
+        > UPLOAD</span>
+      </button>
+      {isImportModelShown && <ImportCsvModal showImportModal = {showImportModal} />}
+    </TopToolbar>
+  );
+};
+
 export const DataList = () => (
-  <List title="Dict Augmentation of Azure translation" filters={<DataFilter />} pagination={<Pagination />}>
+  <List title="Dict Augmentation of Azure translation" actions = {<ListActions />} filters={<DataFilter />} pagination={<Pagination />} empty={false}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
       <TextField source="source" />
