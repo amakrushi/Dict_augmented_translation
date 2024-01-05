@@ -1,0 +1,206 @@
+@mixin on-mobile {
+    @media (max-width: 769px) {
+        @content
+    }
+}
+
+.container {
+    width: 50vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    @include on-mobile() {
+        width: 80vw;
+    }
+
+    & div:nth-child(1) {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .progressContainer {
+        width: 100%;
+        margin: 1rem 0rem;
+        height: 30px;
+        border-radius: 0.5rem;
+        background: #F2F1F0;
+        position: relative;
+
+        .progressBar {
+            position: absolute;
+            transition: all 0.1s ease-in;
+            left: 0;
+            border-radius: 0.5rem;
+            bottom: 0;
+            width: 0;
+            height: 30px;
+            background: #fff;
+            overflow: hidden;
+            background: linear-gradient(90deg, #0081C9, #5BC0F8, #86E5FF, #5BC0F8, #0081C9);
+            animation: animate 2s linear infinite;
+        }
+    }
+
+    .logsContainer {
+        display: flex;
+        flex-direction: column;
+        height: 50vh;
+        width: 100%;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+        border-radius: 0.2rem;
+        margin-top: 2rem;
+
+        .logsHeader {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 9%;
+
+            & div {
+                font-size: 0.8rem;
+                font-weight: 500;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
+                background: #1a2c3d;
+                border-right: 1px solid #fff;
+            }
+
+            & div:nth-child(1) {
+                width: 10%;
+
+                @include on-mobile() {
+                    width: 10%;
+                }
+            }
+
+            & div:nth-child(2) {
+                width: 25%;
+
+                @include on-mobile() {
+                    width: 50%;
+                }
+            }
+
+            & div:nth-child(3) {
+                width: 25%;
+
+                @include on-mobile() {
+                    width: 40%;
+                }
+            }
+
+            & div:nth-child(4) {
+                width: 40%;
+            }
+        }
+
+        .logsData {
+            overflow: scroll;
+            width: 100%;
+            height: 91%;
+            display: flex;
+            flex-direction: column;
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            .dataCell {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+
+                & div {
+                    min-height: 5rem;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #1a2c3d;
+                    border: 1px solid #fff;
+                }
+
+                & div:nth-child(1) {
+                    width: 10%;
+
+                    @include on-mobile() {
+                        width: 10%;
+                    }
+                }
+
+                & div:nth-child(2) {
+                    width: 25%;
+
+                    @include on-mobile() {
+                        width: 50%;
+                    }
+                }
+
+                & div:nth-child(3) {
+                    width: 25%;
+
+                    @include on-mobile() {
+                        width: 40%;
+                    }
+                }
+
+                & div:nth-child(4) {
+                    width: 40%;
+                }
+            }
+        }
+    }
+
+    .btnContainer {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+        gap: 2rem;
+        margin-top: 2rem;
+        padding: 2rem 0rem;
+
+        & div {
+            cursor: pointer;
+            color: #1a2c3d;
+            border: 1px solid #1a2c3d;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        & div:nth-child(2) {
+            background: #1a2c3d;
+            color: #fff;
+        }
+
+        .disabled {
+            background: #F2F1F0 !important;
+            border: 1px solid rgba(0, 0, 0, 0.2) !important;
+            color: rgba(0, 0, 0, 0.4) !important;
+            cursor: not-allowed !important;
+        }
+    }
+}
+
+@keyframes animate {
+    0% {
+        background-position-x: 0;
+        ;
+    }
+
+    100% {
+        background-position-x: 50vw;
+        ;
+    }
+}

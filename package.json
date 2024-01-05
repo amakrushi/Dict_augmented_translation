@@ -20,6 +20,11 @@
     "react": "18.2.0",
     "react-admin": "^4.12.3",
     "react-dom": "18.2.0",
-    "typescript": "5.1.6"
+    "react-icons": "^4.12.0",
+    "typescript": "5.1.6",
+    "sass": "^1.62.0",
+    "@mui/icons-material": "^5.10.6",
+    "csvtojson": "^2.0.10",
+    "lodash": "^4.17.21"
   }
 }
